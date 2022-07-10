@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Recensioni</title>
+  </head>
+  <body>
+    <div class="titleRec">
+      <span style="--i: 1">R</span>
+      <span style="--i: 2">E</span>
+      <span style="--i: 3">C</span>
+      <span style="--i: 4">E</span>
+      <span style="--i: 5">N</span>
+      <span style="--i: 6">S</span>
+      <span style="--i: 7">I</span>
+      <span style="--i: 8">O</span>
+      <span style="--i: 7">N</span>
+      <span style="--i: 8">I</span>
+      <br /><br />
+    </div>
+
+    <div class="inputPostRec"></div>
+
+    <p>Nome: <input type="text" id="nome" class="review" /></p>
+
+    <p>Luogo: <input type="text" id="luogo" class="review" /></p>
+
+    <div>
+      <p>Commento:</p>
+
+      <textarea id="commento" class="review" cols="50" rows="10"></textarea>
+      <br />
+      <br />
+      <button id="btn" class="btn">Aggiungi recensione</button>
+      <br />
+      <br />
+      <br />
+    </div>
+
+    <p class="cId">
+      <br /><br />
+      Recensioni in Archivio:
+    </p>
+    <p id="recensioni" class="cIdLista"><br /><br /></p>
+  </body>
+  <script>
+    window.addEventListener("load", getListaRecensioni);
+
+    async function getListaRecensioni() {
+      const response = await fetch("/db/recensioni");
+      const recensioni = await response.json();
+      for (i = 0; i < recensioni.length; i++) {
+        var nome = recensioni[i].nome;
+        var luogo = recensioni[i].luogo;
+        var commento = recensioni[i].commento;
+        var anno = recensioni[i].anno;
+        var ora = recensioni[i].ora;
+
+        const lista = document.getElementById("recensioni");
+        lista.innerHTML +=
+          "Recensione aggiunta il " +
+          anno +
+          " alle ore " +
+          ora +
+          "<br>" +
+          "Nome: " +
+          nome +
+          "<br>" +
+          "Luogo: " +
+          luogo +
+          "<br>" +
+          commento +
+          "<br><br>";
+      }
+    }
+    const element = document.getElementById("btn");
+    element.addEventListener("click", postRecensione);
+
+    function postRecensione() {
+      const nome = document.getElementById("nome").value;
+      const luogo = document.getElementById("luogo").value;
+      const commento = document.getElementById("commento").value;
+      const lista = document.getElementById("recensioni");
+
+      const anno = new Date().toISOString().slice(0, 10).toString();
+      const ora = new Date().toISOString().slice(12, 16).toString();
+
+      const data = {
+        nome: nome,
+        luogo: luogo,
+        commento: commento,
+        anno: anno,
+        ora: ora,
+      };
+
+      fetch("https://progetto-piattaforme-digitali.glitch.me/review", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      lista.innerHTML +=
+        "Recensione aggiunta il " +
+        anno +
+        " alle ore " +
+        ora +
+        "<br>" +
+        "Nome: " +
+        nome +
+        "<br>" +
+        "Luogo: " +
+        luogo +
+        "<br>" +
+        commento +
+        "<br><br>";
+    }
+  </script>
+</html>
