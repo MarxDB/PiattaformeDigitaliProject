@@ -1,0 +1,223 @@
+h1 {
+  font: 700 4em/1 "Oswald", sans-serif;
+  letter-spacing: 0;
+  padding: 0.25em 0 0.325em;
+  display: block;
+  margin: 0 auto;
+  text-shadow: 0 0 80px rgba(255, 255, 255, 0.5);
+
+  /* Clip Background Image */
+
+  background: url(https://i.ibb.co/RDTnNrT/animated-text-fill.png) repeat-y;
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* Animate Background Image */
+
+  -webkit-text-fill-color: transparent;
+  -webkit-animation: aitf 80s linear infinite;
+
+  /* Activate hardware acceleration for smoother animations */
+
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+}
+
+body {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.5)
+    ),
+    url("https://cdn.glitch.global/7dadc842-35c9-43c8-9713-3e8cd457bc11/R%20(1).jfif?v=1657364737871");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: contain;
+  background-size: 100vw 670vh;
+  padding-top: 50px;
+  padding-right: 30px;
+  padding-bottom: 50px;
+  padding-left: 80px;
+  font-family: Verdana, sans-serif;
+}
+
+/* Animate Background Image */
+@-webkit-keyframes aitf {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+/*classi*/
+
+/*classe css recensioni.html input label*/
+.review {
+  background: LightGoldenRodYellow;
+  color: black;
+}
+
+/*classe css recensioni/wellcome bottoni*/
+.btn {
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font: bold 12px Arial, Helvetica, sans-serif;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: solid 1px #0076a3;
+  background: #0095cd;
+  float: right;
+}
+
+/*classe css wellcome.html posizione bottone trova posizione*/
+.posSeek {
+  position: absolute;
+  margin: right;
+}
+
+/*classe css wellcome.html posizione bottone vai alle recensioni*/
+.goRec {
+  margin: left;
+}
+
+/*classe css font intestazione lista wellcome/recensioni.html*/
+.cId {
+  font-family: "Georgia", serif;
+  font-style: italic;
+  font-size: 40px;
+  font-weight: bold;
+  line-height: 33px;
+  color: FloralWhite;
+  text-shadow: -1px 1px 0 #000000, 1px 1px 0 #000000, 1px -1px 0 #000000,
+    -1px -1px 0 #000000;
+}
+
+/*classe css font lista wellcome/recensioni.html*/
+.cIdLista {
+  font-family: "Georgia", serif;
+  font-style: italic;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 33px;
+  color: FloralWhite;
+  text-shadow: -1px 1px 0 #000000, 1px 1px 0 #000000, 1px -1px 0 #000000,
+    -1px -1px 0 #000000;
+}
+
+/*classe css contenitore recensioni.html inserimento dati POST RECENSIONI*/
+.inputPostRec {
+  float: right;
+  border-radius: 10px;
+  box-shadow: 1px 2px 10px beige;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  background-size: fixed;
+
+  width: 600px;
+  height: 400px;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: slider 20s infinite;
+  padding-right: 30px;
+}
+
+/*classe css contenitore recensioni.html titolo*/
+.titleRec {
+  position: relative;
+  text-align: center;
+  font-size: 70px;
+  text-align: center;
+  color: #000000;
+  text-shadow: -1px 1px 0 #000000, 1px 1px 0 #000000, 1px -1px 0 #000000,
+    -1px -1px 0 #000000;
+}
+
+/*classe css contenitore recensioni.html titolo*/
+.titleRec span {
+  position: relative;
+  display: inline-block;
+  font-size: 40px;
+
+  text-transform: uppercase;
+  animation: flip 8s infinite;
+  animation-delay: calc(0.2s * var(--i));
+}
+@keyframes flip {
+  0%,
+  80% {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes slider {
+  0%,
+  100% {
+    background-image: url(https://cdn.glitch.global/7dadc842-35c9-43c8-9713-3e8cd457bc11/gradara.jpg?v=1657024905969);
+  }
+  33.33% {
+    background-image: url(https://cdn.glitch.global/7dadc842-35c9-43c8-9713-3e8cd457bc11/palazzo-Ducale-di-Urbino-800x515.jpg?v=1657140545622);
+  }
+  66.66% {
+    background-image: url(https://cdn.glitch.global/7dadc842-35c9-43c8-9713-3e8cd457bc11/R.jpg?v=1657024918037);
+  }
+}
+
+/*id div css wellcome.html contenitore bottoni*/
+#btnW {
+  position: relative;
+  float: right;
+
+  width: 450px;
+}
+
+/*id div css wellcome.html contenitore immagini intestazione*/
+#images {
+  text-align: center;
+}
+
+/*id div css wellcome.html contenitore mappa*/
+#mapCont {
+  display: flex;
+  justify-content: center;
+}
+
+/*id div css wellcome.html contenitore mappa*/
+#mapid {
+  height: 400px;
+  width: 900px;
+}
+
+
+/*id bottone css recensioni.html POST RECENSIONE*/
+#btn {
+  float: left !important;
+}
+
+/*id paragrafo recensioni.html contenitore lista recensioni*/
+#reviewList {
+  float: left;
+  color: FloralWhite;
+  text-shadow: -1px 1px 0 #000000, 1px 1px 0 #000000, 1px -1px 0 #000000,
+    -1px -1px 0 #000000;
+}
+
+/*id div contenitore wellcome.html titolo*/
+#title {
+  background-image: url("https://cdn.glitch.global/7dadc842-35c9-43c8-9713-3e8cd457bc11/OIP.jfif?v=1657367231026");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 26vw 20vh;
+  background-size: fixed;
+
+  font: 400 1em/1.5;
+
+  color: rgba(255, 255, 255, 0.25);
+
+  text-align: center;
+}
+
+

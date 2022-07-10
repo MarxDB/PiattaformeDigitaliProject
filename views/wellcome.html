@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A cool thing made with Glitch" />
+
+    <title>Wellcome!</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin=""
+    />
+
+    <script
+      src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+      integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+      crossorigin=""
+    ></script>
+  </head>
+
+  <body>
+    <div id="title">
+      <br /><br /><br />
+      <h1>Castel Blog</h1>
+      <br /><br />
+    </div>
+    <hr />
+    <div id="images">
+      <br /><br /><br />
+      <img
+        height="300"
+        src="https://cdn.glitch.global/7dadc842-35c9-43c8-9713-3e8cd457bc11/gradara.jpg?v=1657024905969"
+      />
+      <img
+        height="300"
+        src="https://cdn.glitch.global/7dadc842-35c9-43c8-9713-3e8cd457bc11/R.jpg?v=1657024918037"
+      />
+      <img
+        height="300"
+        src="https://cdn.glitch.global/7dadc842-35c9-43c8-9713-3e8cd457bc11/urbino.jpg?v=1657024930908"
+      />
+    </div>
+    <br /><br /><br />
+    <div id="mapCont">
+      <div id="mapid"></div>
+    </div>
+    <br />
+
+    <div id="btnW">
+      <br />
+      <br />
+      <form action="/recensioni" class="inline">
+        <button class="btn goRec">Vai alle recensioni</button>
+      </form>
+
+      <button id="fpbtn" class="btn posSeek">
+        Trova la posizione più vicina a te
+      </button>
+
+      <br />
+      <p id="posP" class="cIdLista"></p>
+      <br />
+    </div>
+
+    <p class="cId">Lista castelli:</p>
+    <div class="cIdLista">
+      <p id="pid">
+        <br />
+      </p>
+    </div>
+
+    <script>
+      const attribution =
+        '&copy; <a href="htts://www.openstreetmap.org/copyright"> OpenStreetMap </a>contributors';
+      const tUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+      const tiles = L.tileLayer(tUrl, { attribution });
+      var map = L.map("mapid");
+      tiles.addTo(map);
+      const latMarche = 43.466808357378786;
+      const lonMarche = 13.275624168692582;
+      map.setView([latMarche, lonMarche], 8);
+
+      window.addEventListener("load", setupCastelli);
+
+      async function setupCastelli() {
+        const castelli = await getCastelli();
+
+        for (let i = 0; i < castelli.markerInfo.length; i += 2) {
+          var lon = castelli.markerInfo[i][0];
+          var lat = castelli.markerInfo[i][1];
+          var descrizione = castelli.markerInfo[i + 1];
+
+          if (
+            !isNaN(lat) &&
+            !isNaN(lon) &&
+            !(lat === null) &&
+            !(lon === null)
+          ) {
+            var markerCastello = new L.LatLng(lat, lon);
+            var marker = new L.Marker(markerCastello);
+            map.addLayer(marker);
+            marker.bindPopup(descrizione);
+            const lista = document.getElementById("pid");
+            lista.innerHTML += descrizione + "<br><br>";
+          }
+        }
+      }
+
+      async function getCastelli() {
+        const response = await fetch("/castelcsv");
+        const castelli = await response.json();
+
+        const markerInfo = castelli["data"]; //[[lat,lon], descrizione]
+
+        return { markerInfo };
+      }
+
+      const element = document.getElementById("fpbtn");
+      element.addEventListener("click", getLocation);
+      var userRelativePosition = document.getElementById("posP");
+
+      async function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          userRelativePosition.innerHTML =
+            "Geolocation is not supported by this browser.";
+        }
+      }
+
+      async function showPosition(position) {
+        const castelli = await getCastelli();
+        const R = 6371;
+
+        const clientLat = position.coords.latitude;
+        const clientLon = position.coords.longitude;
+
+        var descrizione;
+        var ctrlDistance = 0;
+
+        var lon, lat, deltaLat, deltaLon, lat1Rad, Lat2Rad, currentDistance;
+
+        for (let i = 0; i < castelli.markerInfo.length; i += 2) {
+          lon = castelli.markerInfo[i][0];
+          lat = castelli.markerInfo[i][1];
+
+          currentDistance = getDistance(clientLat, clientLon, lat, lon);
+          /*calcolo giusto prende descrizione dopo*/
+          if (ctrlDistance == 0) {
+            ctrlDistance = currentDistance;
+          } else {
+            if (ctrlDistance > currentDistance) {
+              descrizione = castelli.markerInfo[i + 1];
+              ctrlDistance = currentDistance;
+            }
+          }
+        }
+        //var marker = L.marker([clientLat, clientLon]).addTo(map);
+
+        var circle = L.circle([clientLat, clientLon], {
+          color: "red",
+          fillColor: "#f03",
+          fillOpacity: 0.5,
+          radius: 1500,
+        }).addTo(map);
+
+        map.addLayer(circle);
+        circle.bindPopup("Tu sei qui!");
+
+        userRelativePosition.innerHTML = "<br> " + descrizione;
+        ctrlDistance = 0;
+      }
+
+      function getDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+
+        var deltaLat = degreeToRadians(lat2 - lat1);
+        var deltaLon = degreeToRadians(lon2 - lon1);
+
+        lat1Rad = degreeToRadians(lat1);
+        lat2Rad = degreeToRadians(lat2);
+
+        var a =
+          Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+          Math.cos(lat1Rad) *
+            Math.cos(lat2Rad) *
+            Math.sin(deltaLon / 2) *
+            Math.sin(deltaLon / 2);
+
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c;
+
+        return d;
+      }
+
+      function degreeToRadians(value) {
+        return (value * Math.PI) / 180;
+      }
+    </script>
+  </body>
+</html>
