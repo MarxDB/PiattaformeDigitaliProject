@@ -61,7 +61,9 @@ Per questo progetto sono stati utilizzati i linguaggi: Javascript, html, css.
 
 ### Link utili: 
 
-Link al progetto sulla piattaforma GLITCH:  https://progetto-piattaforme-digitali.glitch.me/
+Link al progetto sulla piattaforma GLITCH:  https://glitch.com/edit/#!/interest-seeker?path=README.md%3A1%3A0
+
+Link alla home page del sito:               https://progetto-piattaforme-digitali.glitch.me/
 
 Link al sito degli Open Data Marche:        https://www.regione.marche.it/Regione-Utile/Agenda-Digitale/Open-data
 
