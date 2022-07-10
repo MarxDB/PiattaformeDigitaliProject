@@ -1,42 +1,69 @@
-# Hello Node!
+# Progetto di Piattaforme digitali per il territorio
+### Marzio Della Bosca
 
-This project includes a Node.js server script and a web page that connects to it. The front-end page presents a form the visitor can use to submit a color name, sending the submitted value to the back-end API running on the server. The server returns info to the page that allows it to update the display with the chosen color. 🎨
 
-[Node.js](https://nodejs.org/en/about/) is a popular runtime that lets you run server-side JavaScript. This project uses the [Fastify](https://www.fastify.io/) framework and explores basic templating with [Handlebars](https://handlebarsjs.com/).
+## Specifiche di progetto
 
-## Prerequisites
+Sviluppo di una API REST, ovvero un application programming interface. A tale scopo è stato implementato un sito web in grado di supportare una comunicazione 
+client-server mediante l'utilizzo di metodi GET, POST e DELETE. iL sito web ha come scopo quello di valorizzare una parte del patrimonio culturale, artistico e
+storico delle Marche presentando posizione, descrizione ed indirizzo web di alcuni castelli presenti sul territorio marchigiano.
 
-You'll get best use out of this project if you're familiar with basic JavaScript. If you've written JavaScript for client-side web pages this is a little different because it uses server-side JS, but the syntax is the same!
+## Analisi del problema
 
-## What's in this project?
+### Goal:
+- Immagazzinare le informazioni necessarie alla erogazione delle informazioni relative ai luoghi di interesse.
+- Graficare le infomazioni.
+- Calcolare il luogo di interesse più vicino.
+- Memorizzare le recensioni.
 
-← `README.md`: That’s this file, where you can tell people what your cool website does and how you built it.
+### input:
+- file csv con posizione, descrizione e indirizzo web dei luoghi di interesse.
+- posizione in termini di latitudine e longitudine dal client.
+- recensione di un luogo di interesse il cui valore sarà scomposto nelle chiavi: nome, orario di immissione, commento.
 
-← `public/style.css`: The styling rules for the pages in your site.
+### output:
+- lista nomi e descrizioni dei luoghi di interesse.
+- nome e descrizione del luogo di interesse più vicino.
+- lista delle recensioni precedentemente inserite.
+- grafica con le i luoghi presenti una mappa.
 
-← `server.js`: The **Node.js** server script for your new site. The JavaScript defines the endpoints in the site back-end, one to return the homepage and one to update with the submitted color. Each one sends data to a Handlebars template which builds these parameter values into the web page the visitor sees.
+## Implementazione
 
-← `package.json`: The NPM packages for your project's dependencies.
+La pagina principale attende il caricamento dei dati dei castelli tramite un metodo GET che tramite un parser estrae i dati dal formato csv e li manda alla pagina in formato json. Per ogni luogo di interesse in memoria viene aggiunto alla mappa un marker con pop-up e plotta i dati in un container. 
 
-← `src/`: This folder holds the site template along with some basic data files.
+Sempre sulla pagina principale il client potrà essere reindirizzato alla pagina delle recensioni o ottenere lo sua posizione sulla mappa e il luogo di interesse più vicino assieme alla sua descrizione e indirizzo web. Per accedere alla funzione l'utente dovrà accettare di condividere la sua posizione.
 
-← `src/pages/index.hbs`: This is the main page template for your site. The template receives parameters from the server script, which it includes in the page HTML. The page sends the user submitted color value in the body of a request, or as a query parameter to choose a random color.
+Nella pagina recensioni il client potrà fare una POST aggiungendo una recensione alla lista di recensioni già presenti in archivio. Al caricamento della pagina tramite un metodo GET le recensioni in archivio vengono plottate sotto alla FORM per l'inserimento della recensione.
 
-← `src/colors.json`: A collection of CSS color names. We use this in the server script to pick a random color, and to match searches against color names.
+## File di progetto:
 
-← `src/seo.json`: When you're ready to share your new site or add a custom domain, change SEO/meta settings in here.
+← `README.md`
 
-## Try this next 🏗️
+← `public/style.css`: Regole di stile per le grafiche implementate.
 
-Take a look in `TODO.md` for next steps you can try out in your new site!
+← `public/castelli.csv`: File formato csv contenente le informazioni dei luoghi di interesse.
 
-___Want a minimal version of this project to build your own Node.js app? Check out [Blank Node](https://glitch.com/edit/#!/remix/glitch-blank-node)!___
+← `views/wellcome.html`: Web front page.
 
-![Glitch](https://cdn.glitch.com/a9975ea6-8949-4bab-addb-8a95021dc2da%2FLogo_Color.svg?v=1602781328576)
+← `views/recensioni.html`: Pagina web inerente alla sezione recensioni.
 
-## You built this with Glitch!
+← `server.js`: Il server Node.js del sito. Contiene gli script che definiscono gli endpoint che gestiranno le risposte lato-server.
 
-[Glitch](https://glitch.com) is a friendly community where millions of people come together to build web apps and websites.
+← `recensioni.json`: File formato json contenente le recensioni in archivio.
 
-- Need more help? [Check out our Help Center](https://help.glitch.com/) for answers to any common questions.
-- Ready to make it official? [Become a paid Glitch member](https://glitch.com/pricing) to boost your app with private sharing, more storage and memory, domains and more.
+← `package.json`: Package contenente le dipendenze di progetto.
+
+← `src/colors.json`: Collezione di colori in formato css.
+
+### Informazioni e dipendenze di progetto:
+Questo progetto utilizza un server [Node.js](https://nodejs.org/en/about/) e il framework [Fastify](https://www.fastify.io/).
+Per questo progetto sono stati utilizzati i linguaggi: Javascript, html, css.
+
+### Link utili: 
+
+Link al progetto sulla piattaforma GLITCH:  https://progetto-piattaforme-digitali.glitch.me/
+
+Link al sito degli Open Data Marche:        https://www.regione.marche.it/Regione-Utile/Agenda-Digitale/Open-data
+
+
+
